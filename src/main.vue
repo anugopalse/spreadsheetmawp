@@ -165,7 +165,8 @@ export default {
 
     sheet.range(MAWPCells).format(kendo.spreadsheet.formats.number);
     dataCells="A2:AA" + rangeLen;
-    sheet.range(dataCells).borderBottom({ size: 1, color: "darkgrey" });
+    sheet.range(dataCells).borderBottom({ size: 1, color: "darkgrey" }).borderRight({ size: 1, color: "darkgrey" });
+
     this.calc();
   },
 
