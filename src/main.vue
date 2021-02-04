@@ -144,8 +144,8 @@ export default {
     sheet.range("P1").input("Gas Column Pressure");
     sheet.range("Q1").input("Mud Column Pressure");
     sheet.range("R1").input("Frac pressure at Shoe");
-    sheet.range("S1").input("Frac Pressure At Wellhead If All Gas");
-    sheet.range("T1").input("Frac Pressure At Wellhead If Partially Fluid ");
+    sheet.range("S1").input("Frac Pressure At Wellhead (If All Gas)");
+    sheet.range("T1").input("Frac Pressure At Wellhead (If Partially Fluid)");
     sheet.range("U1").input("No Frac Pore Pressure On Bottom");
     sheet.range("V1").input("Pore + Partial Gas ASP ");
     sheet.range("W1").input("BHP at Deepest Exposed Depth");
