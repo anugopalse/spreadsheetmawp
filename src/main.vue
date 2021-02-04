@@ -158,9 +158,14 @@ export default {
     var rangeLen = this.datalen + 1;
     var dataCells="E2:E" + rangeLen;
     sheet.range(dataCells).background("#F0F3F4");
-    var dataCells="G2:AA" + rangeLen;
+    dataCells="G2:AA" + rangeLen;
     sheet.range(dataCells).background("#F0F3F4");
 
+    var MAWPCells="X2:AA" + rangeLen;
+
+    sheet.range(MAWPCells).format(kendo.spreadsheet.formats.number);
+    dataCells="A2:AA" + rangeLen;
+    sheet.range(dataCells).borderBottom({ size: 1, color: "darkgrey" });
     this.calc();
   },
 
