@@ -4,11 +4,23 @@
 			:rows="100" :sheetsbar="false"> -->
 
 		<spreadsheet ref="spreadsheet" :toolbar="false" :toolbarData="false" :toolbarInsert="false" :sheetsbar="false"
-			:columns="16">
-			<spreadsheet-sheet :name="'Products'" :data-source="datasource" :rows="rows" :columns="columns"
-				:frozenRows="1" :excel-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
+			:columns="27">
+			<spreadsheet-sheet :name="'MAWP'" :data-source="datasource" :rows="rows" :columns="columns" :frozenRows="1"
+				:excel-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
 				:pdf-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'">
 			</spreadsheet-sheet>
+			<!--
+      <spreadsheet-sheet
+        :name="'BOP'"
+        :data-source="datasource"
+        :rows="rows"
+        :columns="columns"
+        :frozenRows="1"
+        :excel-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
+        :pdf-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
+      >
+      </spreadsheet-sheet>
+      -->
 		</spreadsheet>
 	</div>
 </template>
@@ -27,41 +39,83 @@ export default {
     spreadsheet: Spreadsheet,
     "spreadsheet-sheet": SpreadsheetSheet
   },
-  methods:{
-    requestEnd: function(e) {/*
-      var length = e.response.length;
-      var spread = this.$refs.spreadsheet.kendoWidget();
-
-      setTimeout(function(){
-        for(let i=2; i<length; i++){
-            var sheet = spread.activeSheet();
-            var range = sheet.range("F"+i).formula("C" +i+"*D"+i);
-        }
-      })*/
-      this.datalen=e.response.length;
-      this.calc();
-    },
-    calc: function(){
-      // var spreadsheet = this.$refs.spreadsheet.kendoWidget();
-      // spreadsheet.element.css("height", "600px");
-      // spreadsheet.element.css("width", "100%");
-      // spreadsheet.resize();
-      var rangeLen = this.datalen+1;
+  methods: {
+    calc: function() {
+      var rangeLen = this.datalen + 1;
 
       var spreadsheet = this.$refs.spreadsheet.kendoWidget();
       var sheet = spreadsheet.activeSheet();
-      var rge = "G2:G" + rangeLen;
-      //alert("calc" + rge)
-      sheet.range(rge).formula("C2*D2");
 
-      var productIDRange = "A2:A" + rangeLen;
-      var productNameRange= "B2:B" + rangeLen;
-      var discontinuedRange = "E2:E"+ rangeLen;
-      var headerCellsRange = "A1:G1";
-      sheet.range(productIDRange).enable(false);
-      sheet.range(productNameRange).enable(false);
-      sheet.range(discontinuedRange).enable(false);
-      sheet.range(headerCellsRange).enable(false);
+      var rgeDeepestExposedShoeDepth = "E3:E" + rangeLen;
+      var rgeG2P = "J2:J" + rangeLen;
+      var rgeColumnLength = "K2:K" + rangeLen;
+      var rgeColumnPercent = "L2:L" + rangeLen;
+      var rgeGasColumnGradient = "M2:M" + rangeLen;
+      var rgeWellheadDepth = "N2:N" + rangeLen;
+      var rgeGasColumnLength = "O2:O" + rangeLen;
+      var rgeGasColumnPressure = "P2:P" + rangeLen;
+      var rgeMudColumnPressure = "Q2:Q" + rangeLen;
+      var rgeFracpressureatshoe = "R2:R" + rangeLen;
+      var rgeFracPressureAtWellheadIfAllGas = "S2:S" + rangeLen;
+      var rgeFracPressureAtWellheadIfPartiallyFluid = "T2:T" + rangeLen;
+      var rgeNoFracPorePressureOnBottom = "U2:U" + rangeLen;
+      var rgePorePartialGasASP = "V2:V" + rangeLen;
+      var rgeBHPatdeepestexposeddepth = "W2:W" + rangeLen;
+      var rgeOneThirdBHPatsurface = "X2:X" + rangeLen;
+      var rgeMAWPBSEE = "Y2:Y" + rangeLen;
+      var rgeMAWPShell = "Z2:Z" + rangeLen;
+      var rgeMAWP = "AA2:AA" + rangeLen;
+
+      sheet.range("E2").formula("F2");
+      sheet.range(rgeDeepestExposedShoeDepth).formula("F2");
+
+      sheet.range(rgeG2P).value(0.052);
+      sheet.range(rgeG2P).enable(false);
+
+      sheet.range(rgeColumnLength).formula("F2-(C2+D2)");
+      sheet
+        .range(rgeColumnPercent)
+        .formula(
+          "IF(K2<=10000,0.7,IF(AND(K2>10001,K2<12000),0.6-(0.1/2000)*(K2-12000),IF(K2=12000,0.6,IF(AND(K2>12000,K2<15000),0.5-(0.1/3000)*(K2-15000),IF(K2>=15000,0.5)))))"
+        );
+
+      sheet
+        .range(rgeGasColumnGradient)
+        .formula(
+          "IF(K2<=9000,0.1,IF(AND(K2>9000,K2<11000),0.15+(0.05/2000)*(K2-11000),IF(K2>=11000,0.15)))"
+        );
+
+      sheet.range(rgeWellheadDepth).formula("C2+D2");
+      sheet.range(rgeGasColumnLength).formula("K2*L2");
+      sheet.range(rgeGasColumnPressure).formula("K2*M2");
+
+      sheet.range(rgeMudColumnPressure).formula("K2*(1-L2)*H2*J2");
+      sheet.range(rgeFracpressureatshoe).formula("E2*I2*J2");
+      sheet.range(rgeFracPressureAtWellheadIfAllGas).formula("R2-P2");
+      sheet
+        .range(rgeFracPressureAtWellheadIfPartiallyFluid)
+        .formula("S2-(E2-N2-O2)*H2*J2");
+      sheet.range(rgeNoFracPorePressureOnBottom).formula("I2*J2*F2");
+      sheet.range(rgePorePartialGasASP).formula("U2*Q2-P2");
+
+      sheet.range(rgeBHPatdeepestexposeddepth).formula("H2*J2*F2");
+      sheet.range(rgeOneThirdBHPatsurface).formula("W2/3");
+      sheet
+        .range(rgeMAWPBSEE)
+        .formula(
+          "IF(S2>T2,IF(S2>V2,V2,IF(S2<=V2,S2)),IF(S2<=T2,IF(T2>V2,V2,IF(T2<=V2,T2))))"
+        );
+      sheet.range(rgeMAWPShell).formula("(X2+(R2-X2)/E2)*N2");
+      sheet.range(rgeMAWP).formula("IF(Y2>Z2,Z2,IF(Y2<=Z2,Z2))");
+
+      var headerCellsRange = "A1:AA1";
+      sheet
+        .range(headerCellsRange)
+        .enable(false)
+        .background("#FCF3CF")
+        .bold(true)
+        .textAlign("center")
+        .color("black").wrap(true);
     }
   },
   mounted: function() {
@@ -71,71 +125,76 @@ export default {
     spreadsheet.resize();
 
     var sheet = spreadsheet.activeSheet();
-    sheet.range("F1").input("Computed via Code"); //THIS DOES NOT DISPLAY. TAKES FROM SCHEMA-MODEL
-    sheet.range("G1").input("Formula");
-    /*
-    var rge = "G2:G78" //+ this.datalen;
-    //alert(this.datalen)
-     sheet.range(rge).formula("C2*D2");*/
+    sheet.range("A1").input("Hole Size");
+    sheet.range("B1").input("Nominal Casing Size");
+    sheet.range("C1").input("Water Depth");
+    sheet.range("D1").input("Elevation KB");
+    sheet.range("E1").input("Deepest Exposed Shoe Depth");
+    sheet.range("F1").input("Deepest Exposed Section Depth");
+    sheet.range("G1").input("Frac Gradient");
+    sheet.range("H1").input("Mud Weight");
+    sheet.range("I1").input("Pore Pressure");
 
+    sheet.range("J1").input("G2P (conversion of mud gradient to psi)");
+    sheet.range("K1").input("Column Length ");
+    sheet.range("L1").input("Gas Column % (ft)");
+    sheet.range("M1").input("Gas Column Gradient (psi/ft)");
+    sheet.range("N1").input("Wellhead Depth ");
+    sheet.range("O1").input("Gas Column Length");
+    sheet.range("P1").input("Gas Column Pressure");
+    sheet.range("Q1").input("Mud Column Pressure");
+    sheet.range("R1").input("Frac pressure at Shoe");
+    sheet.range("S1").input("Frac Pressure At Wellhead If All Gas");
+    sheet.range("T1").input("Frac Pressure At Wellhead If Partially Fluid ");
+    sheet.range("U1").input("No Frac Pore Pressure On Bottom");
+    sheet.range("V1").input("Pore + Partial Gas ASP ");
+    sheet.range("W1").input("BHP at Deepest Exposed Depth");
+    sheet.range("X1").input("1/3 * BHP at Surface");
+    sheet.range("Y1").input("MAWP (BSEE)");
+    sheet.range("Z1").input("MAWP (Shell)");
+    sheet.range("AA1").input("MAWP");
 
+    
+    var rangeLen = this.datalen + 1;
+    var dataCells="E2:E" + rangeLen;
+    sheet.range(dataCells).background("#F0F3F4");
+    var dataCells="G2:AA" + rangeLen;
+    sheet.range(dataCells).background("#F0F3F4");
+
+    this.calc();
   },
 
   data: function() {
     return {
-      datalen: 0,
+      datalen: 4,
       rows: [
         {
-          height: 40,
-          cells: [
-            {
-              bold: "true",
-              background: "#D5F5E3",
-              textAlign: "center",
-              color: "black"
-            },
-            {
-              bold: "true",
-              background: "#D5F5E3",
-              textAlign: "center",
-              color: "black"
-            },
-            {
-              bold: "true",
-              background: "#D5F5E3",
-              textAlign: "center",
-              color: "black"
-            },
-            {
-              bold: "true",
-              background: "#D5F5E3",
-              textAlign: "center",
-              color: "black"
-            },
-            {
-              bold: "true",
-              background: "#D5F5E3",
-              textAlign: "center",
-              color: "black"
-            },
-            {
-              bold: "true",
-              background: "#D5F5E3",
-              textAlign: "center",
-              color: "black"
-            },
-            {
-              bold: "true",
-              background: "#D5F5E3",
-              textAlign: "center",
-              color: "black"
-            }
-          ]
+          height: 40
         }
       ],
       columns: [
-        { width: 100 },
-        { width: 415 },
+        { autoWidth: true },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
+        { width: 145 },
         { width: 145 },
         { width: 145 },
         { width: 145 },
@@ -143,66 +202,70 @@ export default {
         { width: 145 }
       ],
       datasource: {
-        requestEnd: this.requestEnd,
-        transport: {
-          read: function(options) {
-            var that = this;
-            $.ajax({
-              url: "https://demos.telerik.com/kendo-ui/service/Products/",
-              dataType: "jsonp",
-              success: function(result) {
-                var res = result;
-                res.forEach(element => {
-                  element.Computed = element.UnitPrice * element.UnitsInStock;
-                });
-                options.success(res);
-                that.datalen=res.length;
-              },
-              error: function(result) {
-                options.error(result);
-              }
-            });
+        data: [
+          {
+            HoleSize: "60",
+            NominalCasingSize: "58",
+            WaterDepth: "100",
+            ElevationKB: "1000",
+            DeepestExposedShoeDepth: "",
+            DeepestExposedSectionDepth: "4000",
+            FracGradient: "10",
+            MudWeight: "11",
+            PorePressure: "12"
           },
-          submit: function(options) {
-            $.ajax({
-              url: "https://demos.telerik.com/kendo-ui/service/Products/Submit",
-              data: { models: kendo.stringify(e.data) },
-              contentType: "application/json",
-              dataType: "jsonp",
-              success: function(result) {
-                e.success(result.Updated, "update");
-                e.success(result.Created, "create");
-                e.success(result.Destroyed, "destroy");
-              },
-              error: function(xhr, httpStatusMessage, customErrorMessage) {
-                alert(xhr.responseText);
-              }
-            });
+          {
+            HoleSize: "50",
+            NominalCasingSize: "48",
+            WaterDepth: "100",
+            ElevationKB: "1000",
+            DeepestExposedShoeDepth: "",
+            DeepestExposedSectionDepth: "5000",
+            FracGradient: "11",
+            MudWeight: "12",
+            PorePressure: "13"
+          },
+          {
+            HoleSize: "40",
+            NominalCasingSize: "38",
+            WaterDepth: "100",
+            ElevationKB: "1000",
+            DeepestExposedShoeDepth: "",
+            DeepestExposedSectionDepth: "6000",
+            FracGradient: "12",
+            MudWeight: "13",
+            PorePressure: "14"
+          },
+          {
+            HoleSize: "30",
+            NominalCasingSize: "28",
+            WaterDepth: "100",
+            ElevationKB: "1000",
+            DeepestExposedShoeDepth: "",
+            DeepestExposedSectionDepth: "7000",
+            FracGradient: "13",
+            MudWeight: "14",
+            PorePressure: "15"
           }
-        },
+        ],
         batch: true,
         schema: {
           model: {
-            id: "ProductID",
             fields: {
-              ProductID: { type: "number", editable: false},
-              ProductName: { type: "string", editable: false  },
-              UnitPrice: { type: "number", editable: false  },
-              Discontinued: { type: "boolean", editable: false  },
-              UnitsInStock: { type: "number", editable: false  },
-              Computed: { type: "number", editable: false  },
-              //Calculated: { type: "number" } //Does not work
+              HoleSize: { type: "number", editable: false, title: "Hole Size" },
+              NominalCasingSize: { type: "number", editable: false },
+              WaterDepth: { type: "number", editable: false },
+              ElevationKB: { type: "number", editable: false },
+              DeepestExposedShoeDepth: { type: "number", editable: false },
+              DeepestExposedSectionDepth: { type: "number", editable: false },
+              FracGradient: { type: "number", editable: false },
+              MudWeight: { type: "number", editable: false },
+              PorePressure: { type: "number", editable: false }
             }
           }
         }
       }
     };
-  },
-
+  }
 };
 </script>
-<!-- <style>
-	li {
-		visibility: hidden
-	}
-</style> -->
