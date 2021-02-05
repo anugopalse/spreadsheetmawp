@@ -1,8 +1,5 @@
 <template>
 	<div>
-		<!--	<spreadsheet ref="spreadsheet" :toolbarData="false" :toolbarInsert="false" :sheetsbar="false" :columns="20"
-			:rows="100" :sheetsbar="false"> -->
-
 		<spreadsheet ref="spreadsheet" :toolbar="false" :toolbarData="false" :toolbarInsert="false" :sheetsbar="false"
 			:columns="27">
 			<spreadsheet-sheet :name="'MAWP'" :data-source="datasource" :rows="rows" :columns="columns" :frozenRows="1"
