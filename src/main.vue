@@ -38,30 +38,30 @@ export default {
   },
   methods: {
     calc: function() {
-      var rangeLen = this.datalen + 1;
+      var rangeLength = this.datalen + 1;
 
       var spreadsheet = this.$refs.spreadsheet.kendoWidget();
       var sheet = spreadsheet.activeSheet();
 
-      var rgeDeepestExposedShoeDepth = "E3:E" + rangeLen;
-      var rgeG2P = "J2:J" + rangeLen;
-      var rgeColumnLength = "K2:K" + rangeLen;
-      var rgeColumnPercent = "L2:L" + rangeLen;
-      var rgeGasColumnGradient = "M2:M" + rangeLen;
-      var rgeWellheadDepth = "N2:N" + rangeLen;
-      var rgeGasColumnLength = "O2:O" + rangeLen;
-      var rgeGasColumnPressure = "P2:P" + rangeLen;
-      var rgeMudColumnPressure = "Q2:Q" + rangeLen;
-      var rgeFracpressureatshoe = "R2:R" + rangeLen;
-      var rgeFracPressureAtWellheadIfAllGas = "S2:S" + rangeLen;
-      var rgeFracPressureAtWellheadIfPartiallyFluid = "T2:T" + rangeLen;
-      var rgeNoFracPorePressureOnBottom = "U2:U" + rangeLen;
-      var rgePorePartialGasASP = "V2:V" + rangeLen;
-      var rgeBHPatdeepestexposeddepth = "W2:W" + rangeLen;
-      var rgeOneThirdBHPatsurface = "X2:X" + rangeLen;
-      var rgeMAWPBSEE = "Y2:Y" + rangeLen;
-      var rgeMAWPShell = "Z2:Z" + rangeLen;
-      var rgeMAWP = "AA2:AA" + rangeLen;
+      var rgeDeepestExposedShoeDepth = "E3:E" + rangeLength;
+      var rgeG2P = "J2:J" + rangeLength;
+      var rgeColumnLength = "K2:K" + rangeLength;
+      var rgeColumnPercent = "L2:L" + rangeLength;
+      var rgeGasColumnGradient = "M2:M" + rangeLength;
+      var rgeWellheadDepth = "N2:N" + rangeLength;
+      var rgeGasColumnLength = "O2:O" + rangeLength;
+      var rgeGasColumnPressure = "P2:P" + rangeLength;
+      var rgeMudColumnPressure = "Q2:Q" + rangeLength;
+      var rgeFracpressureatshoe = "R2:R" + rangeLength;
+      var rgeFracPressureAtWellheadIfAllGas = "S2:S" + rangeLength;
+      var rgeFracPressureAtWellheadIfPartiallyFluid = "T2:T" + rangeLength;
+      var rgeNoFracPorePressureOnBottom = "U2:U" + rangeLength;
+      var rgePorePartialGasASP = "V2:V" + rangeLength;
+      var rgeBHPatdeepestexposeddepth = "W2:W" + rangeLength;
+      var rgeOneThirdBHPatsurface = "X2:X" + rangeLength;
+      var rgeMAWPBSEE = "Y2:Y" + rangeLength;
+      var rgeMAWPShell = "Z2:Z" + rangeLength;
+      var rgeMAWP = "AA2:AA" + rangeLength;
 
       sheet.range("E2").formula("F2");
       sheet.range(rgeDeepestExposedShoeDepth).formula("F2");
@@ -93,7 +93,7 @@ export default {
         .range(rgeFracPressureAtWellheadIfPartiallyFluid)
         .formula("S2-(E2-N2-O2)*H2*J2");
       sheet.range(rgeNoFracPorePressureOnBottom).formula("I2*J2*F2");
-      sheet.range(rgePorePartialGasASP).formula("U2*Q2-P2");
+      sheet.range(rgePorePartialGasASP).formula("U2-Q2-P2");
 
       sheet.range(rgeBHPatdeepestexposeddepth).formula("H2*J2*F2");
       sheet.range(rgeOneThirdBHPatsurface).formula("W2/3");
@@ -102,13 +102,16 @@ export default {
         .formula(
           "IF(S2>T2,IF(S2>V2,V2,IF(S2<=V2,S2)),IF(S2<=T2,IF(T2>V2,V2,IF(T2<=V2,T2))))"
         );
+        //IF(IF(S3>T3, S3, T3)>V3, V3, IF(S3>T3, S3, T3))
       sheet.range(rgeMAWPShell).formula("(X2+(R2-X2)/E2)*N2");
       sheet.range(rgeMAWP).formula("IF(Y2>Z2,Z2,IF(Y2<=Z2,Z2))");
+      //IF(Y3>Z3, Y3, Z3) 
 
+      //Format Header Cells
       var headerCellsRange = "A1:AA1";
       sheet
         .range(headerCellsRange)
-        .enable(false)
+        .enable(false).borderBottom({ size: 1, color: "darkgrey" }).borderRight({ size: 1, color: "darkgrey" })
         .background("#FCF3CF")
         .bold(true)
         .textAlign("center")
@@ -151,17 +154,17 @@ export default {
     sheet.range("Z1").input("MAWP (Shell)");
     sheet.range("AA1").input("MAWP");
 
-    
-    var rangeLen = this.datalen + 1;
-    var dataCells="E2:E" + rangeLen;
+    this.datalen= this.datasource.data.length
+    var rangeLength = this.datalen + 1;
+    var dataCells="E2:E" + rangeLength;
     sheet.range(dataCells).background("#F0F3F4");
-    dataCells="G2:AA" + rangeLen;
+    dataCells="K2:AA" + rangeLength;
     sheet.range(dataCells).background("#F0F3F4");
 
-    var MAWPCells="X2:AA" + rangeLen;
+    var MAWPCells="X2:AA" + rangeLength;
 
     sheet.range(MAWPCells).format(kendo.spreadsheet.formats.number);
-    dataCells="A2:AA" + rangeLen;
+    dataCells="A2:AA" + rangeLength;
     sheet.range(dataCells).borderBottom({ size: 1, color: "darkgrey" }).borderRight({ size: 1, color: "darkgrey" });
 
     this.calc();
@@ -169,7 +172,7 @@ export default {
 
   data: function() {
     return {
-      datalen: 4,
+      datalen: 0,
       rows: [
         {
           height: 40
