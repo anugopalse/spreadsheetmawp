@@ -1,23 +1,17 @@
 <template>
 	<div>
-		<spreadsheet ref="spreadsheet" :toolbar="false" :toolbarData="false" :toolbarInsert="false" :sheetsbar="false"
+		<spreadsheet ref="spreadsheet" :toolbar="false" :toolbarData="false" :toolbarInsert="false" :sheetsbar="true"
 			:columns="27">
 			<spreadsheet-sheet :name="'MAWP'" :data-source="datasource" :rows="rows" :columns="columns" :frozenRows="1"
 				:excel-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
 				:pdf-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'">
 			</spreadsheet-sheet>
-			<!--
-      <spreadsheet-sheet
-        :name="'BOP'"
-        :data-source="datasource"
-        :rows="rows"
-        :columns="columns"
-        :frozenRows="1"
-        :excel-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
-        :pdf-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
-      >
-      </spreadsheet-sheet>
-      -->
+
+			<spreadsheet-sheet :name="'BOP'" :data-source="datasource" :rows="rows" :columns="columns" :frozenRows="1"
+				:excel-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
+				:pdf-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'">
+			</spreadsheet-sheet>
+
 		</spreadsheet>
 	</div>
 </template>
