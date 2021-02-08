@@ -6,18 +6,6 @@
 				:excel-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
 				:pdf-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'">
 			</spreadsheet-sheet>
-			<!--
-      <spreadsheet-sheet
-        :name="'BOP'"
-        :data-source="datasource"
-        :rows="rows"
-        :columns="columns"
-        :frozenRows="1"
-        :excel-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
-        :pdf-proxy-URL="'https://demos.telerik.com/kendo-ui/service/export'"
-      >
-      </spreadsheet-sheet>
-      -->
 		</spreadsheet>
 	</div>
 </template>
@@ -84,7 +72,7 @@ export default {
 
       sheet.range(rgeWellheadDepth).formula("C2+D2");
       sheet.range(rgeGasColumnLength).formula("K2*L2");
-      sheet.range(rgeGasColumnPressure).formula("K2*M2");
+      sheet.range(rgeGasColumnPressure).formula("O2*M2");
 
       sheet.range(rgeMudColumnPressure).formula("K2*(1-L2)*H2*J2");
       sheet.range(rgeFracpressureatshoe).formula("E2*I2*J2");
@@ -99,13 +87,15 @@ export default {
       sheet.range(rgeOneThirdBHPatsurface).formula("W2/3");
       sheet
         .range(rgeMAWPBSEE)
-        .formula(
-          "IF(S2>T2,IF(S2>V2,V2,IF(S2<=V2,S2)),IF(S2<=T2,IF(T2>V2,V2,IF(T2<=V2,T2))))"
+        .formula("IF(IF(S2>T2, S2, T2)>V2, V2, IF(S2>T2, S2, T2))"
+          //"IF(S2>T2,IF(S2>V2,V2,IF(S2<=V2,S2)),IF(S2<=T2,IF(T2>V2,V2,IF(T2<=V2,T2))))"
         );
-        //IF(IF(S3>T3, S3, T3)>V3, V3, IF(S3>T3, S3, T3))
-      sheet.range(rgeMAWPShell).formula("(X2+(R2-X2)/E2)*N2");
-      sheet.range(rgeMAWP).formula("IF(Y2>Z2,Z2,IF(Y2<=Z2,Z2))");
+        
+        //IF(IF(S3>T3, S3, T3)>V3, V3, IF(S3>T3, S3, T3)) 
+      sheet.range(rgeMAWPShell).formula("X2+(R2-X2)/E2*N2");
+      //sheet.range(rgeMAWP).formula("IF(Y2>Z2,Z2,IF(Y2<=Z2,Z2))");
       //IF(Y3>Z3, Y3, Z3) 
+      sheet.range(rgeMAWP).formula("IF(Y2>Z2, Y2, Z2)");
 
       //Format Header Cells
       var headerCellsRange = "A1:AA1";
